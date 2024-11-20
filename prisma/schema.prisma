@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  tg_id     Int     @unique
+  tg_chats  Chat[]
+}
+
+model Chat {
+  id        Int     @id @default(autoincrement())
+  chat_id   Int     @unique
+  admin     User    @relation(fields: [admin_id], references: [tg_id])
+  admin_id  Int
+  posts     Post[]
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  chat      Chat    @relation(fields: [chat_id], references: [chat_id])
+  chat_id   Int
+
+  photo_id  Int?
+  caption   String?
+  text      String?
+}
+

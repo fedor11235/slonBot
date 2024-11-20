@@ -1,0 +1,6 @@
+venv
+.env
+helper
+/prisma/dev.db
+/prisma/dev.db-journal
+/prisma/migrations/
