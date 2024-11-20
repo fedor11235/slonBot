@@ -13,7 +13,7 @@ pip3 install -r requirements.txt
 prisma db push
 
 ## запуск бота
-python3 bot.py
+python3 src/bot.py
 
 ## просмотр бд
 prisma studio
@@ -21,6 +21,5 @@ prisma studio
 # дполнительные команды
 ## вынести все зависмости в отдельный файл
 pip3 freeze > requirements.txt
-
-# проверить 
-telebot - проверить, похоже есть методы для просомтра сообщений
+## лиентер
+flake8 .
