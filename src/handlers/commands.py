@@ -1,13 +1,26 @@
 from aiogram import Router, F, types
 from aiogram.filters import Command, CommandStart
+from prisma.models import User
 from settings import my_keyboard_buttons, messages_no_profile, messages_help
 
 router = Router()
 
 @router.message(CommandStart())
 async def command_start_handler(message: types.Message) -> None:
+    tg_id = message.chat.id
     keyboard = types.ReplyKeyboardMarkup(keyboard=my_keyboard_buttons)
     await message.answer(messages_no_profile, reply_markup=keyboard)
+    user = await User.prisma().upsert(
+        where={
+            'tg_id': tg_id,
+        },
+        data={
+            'create': {
+                'tg_id': tg_id,
+            },
+            'update': {},
+        }
+    )
 
 @router.message(Command("channel"))
 async def command_channel_handler(message: types.Message) -> None:
