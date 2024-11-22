@@ -6,11 +6,15 @@ from settings import my_keyboard_buttons, messages_no_profile, messages_help
 # from dotenv import load_dotenv
 
 from prisma.models import User, Channel
-from helpers.user import getActiveUser
+
+from helpers.user import get_state_user, set_state_user
+from helpers.categories import get_btns_inline_categories
 
 from bot import bot
 
-# load_dotenv()
+import redis
+db_redis = redis.Redis(host='localhost', port=6379, db=0)
+db_redis.ping()
 
 router = Router()
 
@@ -18,9 +22,9 @@ router = Router()
 async def command_message_handler(message: types.Message) -> None:
     user_id = message.chat.id
 
-    is_user_active = await getActiveUser(user_id)
+    user_state = await get_state_user(user_id)
 
-    if is_user_active == False:
+    if user_state == "ЗАПУСТИЛ БОТА":
         text = message.text
         if text != None and '@' in text[0]:
             try:
@@ -38,14 +42,10 @@ async def command_message_handler(message: types.Message) -> None:
                         }
                     },
                 )
-                user_update = await User.prisma().update(
-                    where={
-                        'tg_id': user_id,
-                    },
-                    data={
-                        'is_active': True,
-                    },
-                )
+                await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
+                btns_inline_categories = await get_btns_inline_categories()
+                await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
+                db_redis.set('channel_id', chat.id)
             except:
                 await message.answer("Вы ввели некорректные данные")
 
@@ -66,21 +66,15 @@ async def command_message_handler(message: types.Message) -> None:
                         }
                     },
                 )
-                user_update = await User.prisma().update(
-                    where={
-                        'tg_id': user_id,
-                    },
-                    data={
-                        'is_active': True,
-                    },
-                )
+                await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
+                btns_inline_categories = await get_btns_inline_categories()
+                await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
+                db_redis.set('channel_id', chat.id)
             except:
                 await message.answer("Вы ввели некорректные данные")
 
         elif message.forward_origin != None:
-            try:
-                await message.answer("Это пересланное сообщение")
-                print(message.forward_origin.chat.title)
+            # try:
                 chat_id = message.forward_origin.chat.id
                 username = message.forward_origin.chat.username
                 title = message.forward_origin.chat.title
@@ -97,20 +91,20 @@ async def command_message_handler(message: types.Message) -> None:
                         }
                     },
                 )
-                user_update = await User.prisma().update(
-                    where={
-                        'tg_id': user_id,
-                    },
-                    data={
-                        'is_active': True,
-                    },
-                )
-            except:
-                await message.answer("В пересланном канале нет бота")
+                await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
+                btns_inline_categories = await get_btns_inline_categories()
+                await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
+                db_redis.set('channel_id', chat_id)
+            # except:
+            #     await message.answer("В пересланном канале нет бота")
 
 
         else:
             await message.answer(messages_no_profile)
+
+    # elif user_state == "ЗАДАЁТ КАТЕГОРИЮ":
+    #     channel_id = db_redis.get('channel_id')
+
 
     else:
         await message.answer("Всё шикарно")

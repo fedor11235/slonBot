@@ -14,7 +14,7 @@ datasource db {
 model User {
   id           Int       @id @default(autoincrement())
   tg_id        BigInt    @unique
-  is_active    Boolean   @default(false)
+  state         String   @default("ЗАПУСТИЛ БОТА")
   tariff_plan  String    @default("base")
   channels     Channel[]
 }

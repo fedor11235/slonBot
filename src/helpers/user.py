@@ -3,8 +3,27 @@ from prisma.models import User
 
 async def getActiveUser(user_id):
     user = await User.prisma().find_unique(
-          where={
-              'tg_id': user_id,
-          }
+        where={
+            'tg_id': user_id,
+        }
+    )
+    is_active = user.state == "ЗАПУСТИЛ БОТА"
+    return is_active
+
+async def get_state_user(user_id):
+    user = await User.prisma().find_unique(
+            where={
+                'tg_id': user_id,
+            }
       )
-    return user.is_active
+    return user.state
+
+async def set_state_user(user_id, state):
+    user = await User.prisma().update(
+        where={
+            'tg_id': user_id,
+        },
+        data={
+            'state': state,
+        },
+    )
