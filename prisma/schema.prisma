@@ -17,6 +17,7 @@ model User {
   state        String    @default("ЗАПУСТИЛ БОТА")
   tariff_plan  String    @default("base")
   channels     Channel[]
+  opt_edit     Int?
 }
 
 model Channel {
@@ -32,9 +33,9 @@ model Channel {
 
 model Opt {
   id           Int     @id @default(autoincrement())
-  retail_price Int?
-  channel      Channel @relation(fields: [channelId], references: [id])
-  channelId    Int     @unique
+  channel      Channel @relation(fields: [channel_id], references: [channel_id])
+  channel_id   BigInt  @unique
+  retail_price String?
 }
 
 

@@ -9,6 +9,7 @@ from prisma.models import User, Channel
 
 from helpers.user import get_state_user, set_state_user
 from helpers.categories import get_btns_inline_categories
+from helpers.opt import set_opt
 
 from bot import bot
 
@@ -107,7 +108,7 @@ async def command_message_handler(message: types.Message) -> None:
             await message.answer(messages_no_profile)
 
     elif user_state == "СОЗДАНИЕ ОПТА РОЗНИЧНАЯЯ СТОИМОСТЬ РАЗМЕЩЕНИЯ":
-        pass
+        await set_opt(user_id, "retail_price", message.text)
     # elif user_state == "ЗАДАЁТ КАТЕГОРИЮ":
     #     channel_id = db_redis.get('channel_id')
 
