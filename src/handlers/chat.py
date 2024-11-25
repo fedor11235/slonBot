@@ -12,9 +12,9 @@ from helpers.categories import get_btns_inline_categories
 
 from bot import bot
 
-import redis
-db_redis = redis.Redis(host='localhost', port=6379, db=0)
-db_redis.ping()
+# import redis
+# db_redis = redis.Redis(host='localhost', port=6379, db=0)
+# db_redis.ping()
 
 router = Router()
 
@@ -43,9 +43,9 @@ async def command_message_handler(message: types.Message) -> None:
                     },
                 )
                 await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
-                btns_inline_categories = await get_btns_inline_categories()
+                btns_inline_categories = await get_btns_inline_categories(chat.id)
                 await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
-                db_redis.set('channel_id', chat.id)
+                # db_redis.set('channel_id', chat.id)
             except:
                 await message.answer("Вы ввели некорректные данные")
 
@@ -67,14 +67,14 @@ async def command_message_handler(message: types.Message) -> None:
                     },
                 )
                 await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
-                btns_inline_categories = await get_btns_inline_categories()
+                btns_inline_categories = await get_btns_inline_categories(chat.id)
                 await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
-                db_redis.set('channel_id', chat.id)
+                # db_redis.set('channel_id', chat.id)
             except:
                 await message.answer("Вы ввели некорректные данные")
 
         elif message.forward_origin != None:
-            # try:
+            try:
                 chat_id = message.forward_origin.chat.id
                 username = message.forward_origin.chat.username
                 title = message.forward_origin.chat.title
@@ -92,11 +92,11 @@ async def command_message_handler(message: types.Message) -> None:
                     },
                 )
                 await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
-                btns_inline_categories = await get_btns_inline_categories()
+                btns_inline_categories = await get_btns_inline_categories(chat_id)
                 await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
-                db_redis.set('channel_id', chat_id)
-            # except:
-            #     await message.answer("В пересланном канале нет бота")
+                # db_redis.set('channel_id', chat_id)
+            except:
+                await message.answer("В пересланном канале нет бота")
 
 
         else:
