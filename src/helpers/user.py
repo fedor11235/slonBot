@@ -1,4 +1,3 @@
-
 from prisma.models import User
 
 async def getActiveUser(user_id):
