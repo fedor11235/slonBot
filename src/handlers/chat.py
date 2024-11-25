@@ -106,6 +106,8 @@ async def command_message_handler(message: types.Message) -> None:
         else:
             await message.answer(messages_no_profile)
 
+    elif user_state == "СОЗДАНИЕ ОПТА РОЗНИЧНАЯЯ СТОИМОСТЬ РАЗМЕЩЕНИЯ":
+        pass
     # elif user_state == "ЗАДАЁТ КАТЕГОРИЮ":
     #     channel_id = db_redis.get('channel_id')
 

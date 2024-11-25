@@ -14,19 +14,27 @@ datasource db {
 model User {
   id           Int       @id @default(autoincrement())
   tg_id        BigInt    @unique
-  state         String   @default("ЗАПУСТИЛ БОТА")
+  state        String    @default("ЗАПУСТИЛ БОТА")
   tariff_plan  String    @default("base")
   channels     Channel[]
 }
 
 model Channel {
-  id          Int     @id @default(autoincrement())
-  channel_id  BigInt  @unique
-  admin       User    @relation(fields: [admin_id], references: [tg_id])
-  admin_id    BigInt
-  category    String?
-  username    String?
-  title       String?
+  id           Int     @id @default(autoincrement())
+  channel_id   BigInt  @unique
+  admin        User    @relation(fields: [admin_id], references: [tg_id])
+  admin_id     BigInt
+  category     String?
+  username     String?
+  title        String?
+  opt          Opt?
+}
+
+model Opt {
+  id           Int     @id @default(autoincrement())
+  retail_price Int?
+  channel      Channel @relation(fields: [channelId], references: [id])
+  channelId    Int     @unique
 }
 
 

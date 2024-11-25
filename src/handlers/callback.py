@@ -20,8 +20,9 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: SetCategory
 @router.callback_query(CreationOptCallback.filter(F.step == "START CREATION OPT"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: SetCategoryCallback):
     user_id=query.from_user.id
-    await query.message.answer("Начало создание опта")
-    await set_state_user(user_id, "АВТОРИЗИРОВАН")
+    answer = f"Создаём опт для канала {callback_data.value} Напишите стандартную(розничную) стоимость размещения:"
+    await query.message.answer(answer)
+    await set_state_user(user_id, "СОЗДАНИЕ ОПТА РОЗНИЧНАЯЯ СТОИМОСТЬ РАЗМЕЩЕНИЯ")
 
 @router.callback_query()
 async def my_callback_foo(query: types.CallbackQuery):

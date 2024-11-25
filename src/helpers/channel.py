@@ -21,7 +21,7 @@ async def get_btns_inline_channel(user_id):
     inline_kb_list = []
     for channel in channels:
         inline_kb_list.append([
-            InlineKeyboardButton(text=channel.title, callback_data=CreationOptCallback(channel_id=channel.channel_id, step="START CREATION OPT", value="").pack())
+            InlineKeyboardButton(text=channel.title, callback_data=CreationOptCallback(channel_id=channel.channel_id, step="START CREATION OPT", value=channel.title).pack())
         ])
 
     return InlineKeyboardMarkup(inline_keyboard=inline_kb_list)
