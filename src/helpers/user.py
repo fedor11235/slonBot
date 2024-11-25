@@ -7,6 +7,8 @@ async def getActiveUser(user_id):
             'tg_id': user_id,
         }
     )
+    if user == None:
+        return False
     is_active = user.state == "ЗАПУСТИЛ БОТА"
     return is_active
 
@@ -16,6 +18,8 @@ async def get_state_user(user_id):
                 'tg_id': user_id,
             }
       )
+    if user == None:
+        return "НЕ ЗАПУСТИЛ БОТА"
     return user.state
 
 async def set_state_user(user_id, state):

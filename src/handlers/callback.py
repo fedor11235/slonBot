@@ -4,7 +4,7 @@ from common.callback import CreationOptCallback
 
 router = Router()
 
-@router.callback_query(CreationOptCallback.filter(F.step == "ЗАДАТЬ КАТЕГОРИЮ ОБРАЗОВАНИЕ"))
+@router.callback_query(CreationOptCallback.filter(F.step == "SET CATEGORY EDUCATION"))
 async def my_callback_foo(query: types.CallbackQuery):
     await query.answer("ОБРАЗОВАНИЕ")
 

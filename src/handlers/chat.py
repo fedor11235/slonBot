@@ -24,7 +24,10 @@ async def command_message_handler(message: types.Message) -> None:
 
     user_state = await get_state_user(user_id)
 
-    if user_state == "ЗАПУСТИЛ БОТА":
+    if user_state == "НЕ ЗАПУСТИЛ БОТА":
+        await message.answer(messages_no_profile)
+
+    elif user_state == "ЗАПУСТИЛ БОТА":
         text = message.text
         if text != None and '@' in text[0]:
             try:
@@ -50,8 +53,9 @@ async def command_message_handler(message: types.Message) -> None:
                 await message.answer("Вы ввели некорректные данные")
 
         elif text != None and 'https' in text:
-            username = '@' + text.split('/')[-1]
-            try:
+
+            # try:
+                username = '@' + text.split('/')[-1]
                 chat = await bot.get_chat(username)
                 bot_status = await bot.get_chat_member(chat_id=chat.id, user_id=bot.id)
                 user_сhannel = await Channel.prisma().create(
@@ -70,8 +74,8 @@ async def command_message_handler(message: types.Message) -> None:
                 btns_inline_categories = await get_btns_inline_categories(chat.id)
                 await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
                 # db_redis.set('channel_id', chat.id)
-            except:
-                await message.answer("Вы ввели некорректные данные")
+            # except:
+            #     await message.answer("Вы ввели некорректные данные")
 
         elif message.forward_origin != None:
             try:
