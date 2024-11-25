@@ -109,6 +109,35 @@ async def command_message_handler(message: types.Message) -> None:
 
     elif user_state == "СОЗДАНИЕ ОПТА РОЗНИЧНАЯЯ СТОИМОСТЬ РАЗМЕЩЕНИЯ":
         await set_opt(user_id, "retail_price", message.text)
+        await message.answer('Напишите текущую(оптовую) стоимость размещения. Разница с розничной должна быть не менее 10%:')
+        await set_state_user(user_id, "СОЗДАНИЕ ОПТА ОПТОВАЯ СТОИМОСТЬ РАЗМЕЩЕНИЯ")
+
+    elif user_state == "СОЗДАНИЕ ОПТА ОПТОВАЯ СТОИМОСТЬ РАЗМЕЩЕНИЯ":
+        await set_opt(user_id, "wholesale_price", message.text)
+        await message.answer('Введите минимальное количество мест, необходимое для оформления опта(от 3 до 10):')
+        await set_state_user(user_id, "СОЗДАНИЕ ОПТА МИНИМАЛЬНОЕ КОЛИЧЕСТВО МЕСТ")
+
+    elif user_state == "СОЗДАНИЕ ОПТА МИНИМАЛЬНОЕ КОЛИЧЕСТВО МЕСТ":
+        await set_opt(user_id, "min_seats", message.text)
+        await message.answer('Введите максимальное допустимое количество мест в опте(до 30):')
+        await set_state_user(user_id, "СОЗДАНИЕ ОПТА МАКСИМАЛЬНОЕ КОЛИЧЕСТВО МЕСТ")
+
+    elif user_state == "СОЗДАНИЕ ОПТА МАКСИМАЛЬНОЕ КОЛИЧЕСТВО МЕСТ":
+        await set_opt(user_id, "max_seats", message.text)
+        await message.answer('Выберите доступные для брони слоты:')
+        # await set_state_user(user_id, "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ")
+
+    # elif user_state == "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ":
+    #     await set_opt(user_id, "available_dates", message.text)
+    #     await message.answer('Выберите доступные для брони слоты:')
+    #     await set_state_user(user_id, "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ")
+
+
+
+
+
+
+        
     # elif user_state == "ЗАДАЁТ КАТЕГОРИЮ":
     #     channel_id = db_redis.get('channel_id')
 
