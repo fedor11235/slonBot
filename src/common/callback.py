@@ -14,3 +14,10 @@ class SelectDateOpt(CallbackData, prefix="SELECT DATE OPT"):
     channel_id: int
     step: str
     value: str
+    page: int
+
+class SelectTimeOpt(CallbackData, prefix="SELECT TIME OPT"):
+    channel_id: int
+    step: str
+    value: str
+

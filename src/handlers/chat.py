@@ -9,7 +9,7 @@ from prisma.models import User, Channel
 
 from helpers.user import get_state_user, set_state_user
 from helpers.categories import get_btns_inline_categories
-from helpers.opt import set_opt, get_btns_date
+from helpers.opt import set_opt, get_btns_date, get_btns_time, get_info_opt, get_info_btn_opt
 
 from bot import bot
 
@@ -128,10 +128,17 @@ async def command_message_handler(message: types.Message) -> None:
         await message.answer('Выберите доступные для брони слоты:' , reply_markup=btns_inline_date)
         # await set_state_user(user_id, "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ")
 
-    # elif user_state == "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ":
-    #     await set_opt(user_id, "available_dates", message.text)
-    #     await message.answer('Выберите доступные для брони слоты:')
-    #     await set_state_user(user_id, "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ")
+    elif user_state == "СОЗДАНИЕ ОПТА КРАИНЯЯ ДАТА ФОРМИРОВАНИЯ ОПТА":
+        await set_opt(user_id, "date_deadline", message.text)
+        btns_inline_time = await get_btns_time(user_id)
+        await message.answer('Выберите допустимое время размещений:', reply_markup=btns_inline_time)
+
+    elif user_state == "СОЗДАНИЕ ОПТА КРАИНЯЯ ПРИШЛИТЕ РЕКВИЗИТЫ":
+        await set_opt(user_id, "details", message.text)
+        text = await get_info_opt(user_id)
+        btns_inline_info = await get_info_btn_opt(user_id)
+        await message.answer(text, reply_markup=btns_inline_info)
+
 
 
 

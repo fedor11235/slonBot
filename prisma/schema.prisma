@@ -36,11 +36,13 @@ model Opt {
   channel         Channel @relation(fields: [channel_id], references: [channel_id])
   channel_id      BigInt  @unique
   retail_price    String?
-  date            String?
   wholesale_price String?
   min_seats       String?
   max_seats       String?
-  available_dates String?
+  date            String?
+  time            String?
+  date_deadline   String?
+  details         String?
 }
 
 
