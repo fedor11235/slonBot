@@ -9,3 +9,8 @@ class CreationOptCallback(CallbackData, prefix="CREATION OPT"):
     channel_id: int
     step: str
     value: str
+
+class SelectDateOpt(CallbackData, prefix="SELECT DATE OPT"):
+    channel_id: int
+    step: str
+    value: str

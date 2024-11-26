@@ -1,10 +1,11 @@
 from aiogram import Router, F, types
 
-from common.callback import SetCategoryCallback, CreationOptCallback
+from common.callback import SetCategoryCallback, CreationOptCallback, SelectDateOpt
 
 from helpers.channel import set_category_channel
 from helpers.categories import categories_map
 from helpers.user import get_state_user, set_state_user
+from helpers.opt import get_btns_date, set_opt_date
 
 from prisma.models import User, Opt
 
@@ -49,6 +50,13 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: SetCategory
             'opt_edit': opt.id,
         },
     )
+
+@router.callback_query(SelectDateOpt.filter(F.step == "OPT SELECT DATE"))
+async def my_callback_foo(query: types.CallbackQuery, callback_data: SetCategoryCallback):
+    user_id=query.from_user.id
+    await query.answer(f"Вы выбрали дату: {callback_data.value}")
+    await set_opt_date(user_id, callback_data.value)
+
 
 @router.callback_query()
 async def my_callback_foo(query: types.CallbackQuery):

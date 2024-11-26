@@ -32,13 +32,14 @@ model Channel {
 }
 
 model Opt {
-  id           Int     @id @default(autoincrement())
-  channel      Channel @relation(fields: [channel_id], references: [channel_id])
-  channel_id   BigInt  @unique
-  retail_price String?
+  id              Int     @id @default(autoincrement())
+  channel         Channel @relation(fields: [channel_id], references: [channel_id])
+  channel_id      BigInt  @unique
+  retail_price    String?
+  date            String?
   wholesale_price String?
-  min_seats String?
-  max_seats String?
+  min_seats       String?
+  max_seats       String?
   available_dates String?
 }
 

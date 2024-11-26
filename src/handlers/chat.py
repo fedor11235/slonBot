@@ -9,7 +9,7 @@ from prisma.models import User, Channel
 
 from helpers.user import get_state_user, set_state_user
 from helpers.categories import get_btns_inline_categories
-from helpers.opt import set_opt
+from helpers.opt import set_opt, get_btns_date
 
 from bot import bot
 
@@ -124,7 +124,8 @@ async def command_message_handler(message: types.Message) -> None:
 
     elif user_state == "СОЗДАНИЕ ОПТА МАКСИМАЛЬНОЕ КОЛИЧЕСТВО МЕСТ":
         await set_opt(user_id, "max_seats", message.text)
-        await message.answer('Выберите доступные для брони слоты:')
+        btns_inline_date = await get_btns_date(user_id)
+        await message.answer('Выберите доступные для брони слоты:' , reply_markup=btns_inline_date)
         # await set_state_user(user_id, "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ")
 
     # elif user_state == "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ":
