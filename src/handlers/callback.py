@@ -54,8 +54,9 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: SetCategory
 @router.callback_query(SelectDateOpt.filter(F.step == "OPT SELECT DATE"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: SetCategoryCallback):
     user_id=query.from_user.id
-    await query.answer(f"Вы выбрали дату: {callback_data.value}")
     await set_opt_date(user_id, callback_data.value)
+    btns_inline_date = await get_btns_date(user_id)
+    await query.message.edit_text('Выберите доступные для брони слоты:' , reply_markup=btns_inline_date)
 
 
 @router.callback_query()

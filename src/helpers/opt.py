@@ -28,7 +28,11 @@ async def get_btns_date(user_id, page=0):
             'tg_id': user_id,
         }
     ) 
-
+    channel = await Opt.prisma().find_unique(
+        where={
+            'id': user.opt_edit,
+        },
+    )
     today = datetime.today() + timedelta(days=page * 10)
 
     date_list = [(today + timedelta(days=i)).date() for i in range(10)]
@@ -45,9 +49,9 @@ async def get_btns_date(user_id, page=0):
     for date in date_list:
         inline_kb_list.append([
             InlineKeyboardButton(text=str(date.strftime("%d.%m")), callback_data=SelectDateOpt(channel_id=user.opt_edit, step="OPT SELECT DATE", value="EMPTY").pack()),
-            InlineKeyboardButton(text=" ", callback_data=SelectDateOpt(channel_id=user.opt_edit, step="OPT SELECT DATE", value=f"{date}/УТРО").pack()),
-            InlineKeyboardButton(text=" ", callback_data=SelectDateOpt(channel_id=user.opt_edit, step="OPT SELECT DATE", value=f"{date}/ДЕНЬ").pack()),
-            InlineKeyboardButton(text=" ", callback_data=SelectDateOpt(channel_id=user.opt_edit, step="OPT SELECT DATE", value=f"{date}/ВЕЧЕР").pack()),
+            InlineKeyboardButton(text=f"{'✅' if f'{date}/УТРО' in channel.date else ' '}", callback_data=SelectDateOpt(channel_id=user.opt_edit, step="OPT SELECT DATE", value=f"{date}/УТРО").pack()),
+            InlineKeyboardButton(text=f"{'✅' if f'{date}/ДЕНЬ' in channel.date else ' '}", callback_data=SelectDateOpt(channel_id=user.opt_edit, step="OPT SELECT DATE", value=f"{date}/ДЕНЬ").pack()),
+            InlineKeyboardButton(text=f"{'✅' if f'{date}/ВЕЧЕР' in channel.date else ' '}", callback_data=SelectDateOpt(channel_id=user.opt_edit, step="OPT SELECT DATE", value=f"{date}/ВЕЧЕР").pack()),
         ])
     
     inline_kb_list.append([
