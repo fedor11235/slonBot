@@ -4,6 +4,7 @@ from prisma.models import User
 from settings import my_keyboard_buttons, messages_no_profile, messages_help, message_profile
 from helpers.user import getActiveUser
 from helpers.channel import get_btns_inline_channel
+from helpers.into_opt import get_btns_inline_categories_into_opt
 
 router = Router()
 
@@ -59,7 +60,8 @@ async def command_getopt_handler(message: types.Message) -> None:
     if is_user_active == True:
         await message.answer(message_profile)
     else:
-        await message.answer('Тут создание опта')
+        btns_inline_categories = await get_btns_inline_categories_into_opt()
+        await message.answer('Зайти в опт', reply_markup=btns_inline_categories)
 
 @router.message(Command("business"))
 async def command_business_handler(message: types.Message) -> None:

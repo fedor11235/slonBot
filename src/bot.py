@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-from handlers import commands, keyboard_buttons, chat, callback
+from handlers import commands, keyboard_buttons, chat, callback_common, callback_opt
 from settings import my_commands
 
 load_dotenv()
@@ -22,7 +22,13 @@ async def main() -> None:
     await prisma.connect()
 
     dp = Dispatcher()
-    dp.include_routers(commands.router, keyboard_buttons.router, chat.router, callback.router)
+    dp.include_routers(
+        commands.router,
+        keyboard_buttons.router,
+        chat.router,
+        callback_common.router,
+        callback_opt.router
+    )
 
     await bot.set_my_commands(my_commands, types.BotCommandScopeDefault())
     await dp.start_polling(bot)

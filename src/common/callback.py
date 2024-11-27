@@ -21,3 +21,7 @@ class SelectTimeOpt(CallbackData, prefix="SELECT TIME OPT"):
     step: str
     value: str
 
+class SelectCategoryIntoOptCallback(CallbackData, prefix="SELECT CATEGORY INTO OPT"):
+    step: str
+    value: str
+
