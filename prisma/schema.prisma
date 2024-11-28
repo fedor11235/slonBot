@@ -70,7 +70,7 @@ model Post {
 
 model Admin {
   id              Int     @id @default(autoincrement())
-  login           String  @default("admin")
+  username         String  @default("admin")
   password        String  @default("admin")
 } 
 
