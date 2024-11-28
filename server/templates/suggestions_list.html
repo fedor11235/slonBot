@@ -1,0 +1,8 @@
+{% extends "main_layout.html" %}
+{% block create %}
+<div class="card p-2" style="width: 100%">
+  {% for suggestion in suggestions %}
+  <div><p>{{suggestion.username}}</div>
+  {% endfor %}
+</div>
+{% endblock %}

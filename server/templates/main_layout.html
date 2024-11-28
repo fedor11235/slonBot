@@ -3,13 +3,11 @@
 {% block content %}
 <header class="p-2">
   <ul class="tab tab-block" style="width: 420px;">
-    <li class="tab-item active">
+    <li class="tab-item {{ 'active' if page == 'create' }}">
       <a href="/" style="cursor: pointer;">Создать подборку</a>
-      <!-- Создать подборку -->
     </li>
-    <li class="tab-item">
+    <li class="tab-item {{ 'active' if page == 'list' }}">
       <a href="/list" style="cursor: pointer;">Список подборок</a>
-      <!-- Список подборок -->
     </li>
   </ul>
 </header>
