@@ -25,3 +25,18 @@ class SelectCategoryIntoOptCallback(CallbackData, prefix="SELECT CATEGORY INTO O
     step: str
     value: str
 
+class SelectDateIntoOpt(CallbackData, prefix="SELECT DATE INTO OPT"):
+    channel_id: int
+    step: str
+    value: str
+    page: int
+
+class CreationIntoOptCallback(CallbackData, prefix="CREATION INOPT"):
+    channel_id: int
+    step: str
+    value: str
+
+class SelectTimeIntoOpt(CallbackData, prefix="SELECT TIME INTOPT"):
+    channel_id: int
+    step: str
+    value: str

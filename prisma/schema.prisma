@@ -12,12 +12,13 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  tg_id        BigInt    @unique
-  state        String    @default("ЗАПУСТИЛ БОТА")
-  tariff_plan  String    @default("base")
-  channels     Channel[]
-  opt_edit     Int?
+  id             Int       @id @default(autoincrement())
+  tg_id          BigInt    @unique
+  state          String    @default("ЗАПУСТИЛ БОТА")
+  tariff_plan    String    @default("base")
+  channels       Channel[]
+  opt_edit       Int?
+  into_opt_edit  Int?
 }
 
 model Channel {
@@ -29,6 +30,7 @@ model Channel {
   username     String?
   title        String?
   opt          Opt?
+  into_opt     IntoOpt?
 }
 
 model Opt {
@@ -44,5 +46,27 @@ model Opt {
   date_deadline   String?
   details         String?
 }
+
+model IntoOpt {
+  id              Int     @id @default(autoincrement())
+  channel         Channel @relation(fields: [channel_id], references: [channel_id])
+  channel_id      BigInt  @unique
+  date            String?
+  time            String?
+  posts           Post[]
+}
+
+model Post {
+  id              Int     @id @default(autoincrement())
+  img_id          String?
+  video_id        String?
+  animation_id    String?
+  text            String?
+  caption         String?
+  media_group_id  String?
+  into_opt        IntoOpt @relation(fields: [into_opt_id], references: [id])
+  into_opt_id     Int
+}
+
 
 
