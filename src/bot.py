@@ -10,7 +10,15 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-from handlers import commands, keyboard_buttons, chat, callback_common, callback_opt
+from handlers import (
+    commands,
+    keyboard_buttons,
+    chat,
+    callback_common,
+    callback_opt,
+    callback_into_opt
+)
+
 from settings import my_commands
 
 load_dotenv()
@@ -27,7 +35,8 @@ async def main() -> None:
         keyboard_buttons.router,
         chat.router,
         callback_common.router,
-        callback_opt.router
+        callback_opt.router,
+        callback_into_opt.router
     )
 
     await bot.set_my_commands(my_commands, types.BotCommandScopeDefault())

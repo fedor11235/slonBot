@@ -21,6 +21,6 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: SetCategory
     await set_state_user(user_id, "АВТОРИЗИРОВАН")
 
 
-@router.callback_query()
-async def my_callback_foo(query: types.CallbackQuery):
-    await query.answer("Всё остальное")
+# @router.callback_query()
+# async def my_callback_foo(query: types.CallbackQuery):
+#     await query.answer("Всё остальное")

@@ -61,7 +61,7 @@ async def command_getopt_handler(message: types.Message) -> None:
         await message.answer(message_profile)
     else:
         btns_inline_categories = await get_btns_inline_categories_into_opt()
-        await message.answer('Зайти в опт', reply_markup=btns_inline_categories)
+        await message.answer('Зайти в опт:', reply_markup=btns_inline_categories)
 
 @router.message(Command("business"))
 async def command_business_handler(message: types.Message) -> None:
