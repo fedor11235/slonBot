@@ -1,0 +1,22 @@
+{% extends "main_layout.html" %}
+{% block create %}
+<div class="card p-2" style="width: 100%">
+  <form class="form-group" action="" method="post">
+    <p>
+      <label class="form-label" for="retailPrice">Розничная цена</label>
+      <input class="form-input" type="text" name="retailPrice" placeholder="Розничная цена">
+      <label class="form-label" for="wholesalePrice">Оптовая цена</label>
+      <input class="form-input" type="text" name="wholesalePrice" placeholder="Оптовая цена">
+      <label class="form-label" for="minSeats">Минимальное количество мест</label>
+      <input class="form-input" type="text" name="minSeats" placeholder="Минимальное количество мест">
+      <label class="form-label" for="maxSeats">Максиальное количество мест</label>
+      <input class="form-input" type="text" name="maxSeats" placeholder="Максиальное количество мест">
+      <label class="form-label" for="details">Реквизиты</label>
+      <input class="form-input" type="text" name="details" placeholder="Реквизиты">
+    </p>
+    <p>
+      <input class="btn btn-primary" type="submit">
+    </p>
+  </form>
+</div>
+{% endblock %}

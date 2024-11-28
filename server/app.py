@@ -1,6 +1,6 @@
 import asyncio
 
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask import render_template, request
 from flask_login import LoginManager
 
@@ -11,7 +11,7 @@ app = Flask(__name__)
 # login = LoginManager(app)
 
 @app.route('/login', methods=['post', 'get'])
-def hello_world():
+def login_page():
     message = ''
     if request.method == 'POST':
 
@@ -22,10 +22,15 @@ def hello_world():
 
         if  admin != None:
             message = "Вошли"
+            return redirect(url_for('main_page'))
         else:
             message = "Не вошли"
 
     return render_template('login.html', message=message)
 
+@app.route('/', methods=['get'])
+def main_page():
+    return render_template('suggestions_create.html')
+
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=3002)

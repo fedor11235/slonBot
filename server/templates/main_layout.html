@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="p-2">
+  <ul class="tab tab-block" style="width: 420px;">
+    <li class="tab-item active">
+      <a href="/" style="cursor: pointer;">Создать подборку</a>
+      <!-- Создать подборку -->
+    </li>
+    <li class="tab-item">
+      <a href="/list" style="cursor: pointer;">Список подборок</a>
+      <!-- Список подборок -->
+    </li>
+  </ul>
+</header>
+<body class="p-2">
+  {% block create %}{% endblock %}
+</body>
+{% endblock %}
