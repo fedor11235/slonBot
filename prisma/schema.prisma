@@ -68,5 +68,11 @@ model Post {
   into_opt_id     Int
 }
 
+model Admin {
+  id              Int     @id @default(autoincrement())
+  login           String  @default("admin")
+  password        String  @default("admin")
+} 
+
 
 

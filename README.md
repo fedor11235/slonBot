@@ -15,6 +15,12 @@ prisma db push
 ## запуск бота
 python3 src/bot.py
 
+## запуск сидов
+python3 prisma/seed.py
+
+## запуск админки
+python3 admin/app.py
+
 ## просмотр бд
 prisma studio
 
