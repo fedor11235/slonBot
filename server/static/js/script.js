@@ -1,9 +1,11 @@
 let datesSelect = []
 let timesSelect = []
 let inputDate
+let inputTime
 
 document.addEventListener("DOMContentLoaded", function() {
   inputDate = document.getElementById("input-date");
+  inputTime = document.getElementById("input-time");
   getDate()
   getTime()
 });
@@ -113,7 +115,6 @@ function setDate(event) {
     event.target.innerHTML = "✅"
     inputDate.value = ((inputDate.value? inputDate.value: '') + ' ' + event.target.dataset.date).trim();
   }
-  console.log("inputDate.value: ", inputDate.value)
 }
 
 function nextDate(event) {
@@ -128,8 +129,6 @@ function nextDate(event) {
 
 function getTime() {
   const containerTime = document.getElementById("container-time");
-
-  containerTime.innerHTML = "";
 
   const times = ['8/10', '13/10', '18/10', '9/10', '14/10', '19/10', '10/10', '15/10', '20/10', '11/10', '16/10', '21/10', '12/10', '17/10', '22/10']
 
@@ -155,6 +154,7 @@ function getTime() {
 
     divTime.className = "btn btn-primary";
     divTime.innerHTML = time;
+    divTime.setAttribute('data-time', time);
 
     divTime.addEventListener("click", setTime)
 
@@ -165,13 +165,12 @@ function getTime() {
 function setTime(event) {
   if(event.target.dataset.isSelected) {
     event.target.dataset.isSelected = ""
-    event.target.innerHTML = ""
-    const inputDateValueArray = inputDate.value.split(" ").filter(date => date !== event.target.dataset.date)
-    inputDate.value = inputDateValueArray.join(" ")
+    event.target.innerHTML = event.target.dataset.time
+    const inputTimeValueArray = inputTime.value.split(" ").filter(time => time !== event.target.dataset.time)
+    inputTime.value = inputTimeValueArray.join(" ")
   } else {
     event.target.dataset.isSelected = "active"
-    event.target.innerHTML = "✅"
-    inputDate.value = ((inputDate.value? inputDate.value: '') + ' ' + event.target.dataset.date).trim();
+    event.target.innerHTML = `${event.target.dataset.time} ✅`
+    inputTime.value = ((inputTime.value? inputTime.value: '') + ' ' + event.target.dataset.time).trim();
   }
-  console.log("inputDate.value: ", inputDate.value)
 }
