@@ -16,7 +16,8 @@ from handlers import (
     chat,
     callback_common,
     callback_opt,
-    callback_into_opt
+    callback_into_opt,
+    callback_into_suggestions
 )
 
 from settings import my_commands
@@ -36,7 +37,8 @@ async def main() -> None:
         chat.router,
         callback_common.router,
         callback_opt.router,
-        callback_into_opt.router
+        callback_into_opt.router,
+        callback_into_suggestions.router
     )
 
     await bot.set_my_commands(my_commands, types.BotCommandScopeDefault())

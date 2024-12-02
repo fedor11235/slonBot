@@ -60,15 +60,16 @@ model Suggestions {
   id              Int     @id @default(autoincrement())
   // channel         Channel @relation(fields: [channel_id], references: [channel_id])
   // channel_id      BigInt  @unique
-  retail_price    String?
-  wholesale_price String?
-  min_seats       String?
-  max_seats       String?
-  date            String?
-  time            String?
+  category        String
+  retail_price    String
+  wholesale_price String
+  min_seats       String
+  max_seats       String
+  date            String
+  time            String
   date_deadline   String?
-  details         String?
-  username        String?
+  details         String
+  username        String
 }
 
 model Post {

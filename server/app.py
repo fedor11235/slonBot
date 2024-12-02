@@ -39,6 +39,7 @@ def main_page():
         details = request.form.get('details')
         date = request.form.get('date')
         time = request.form.get('time')
+        category = request.form.get('category')
         asyncio.run(handler_create_suggestions(
             username=username,
             retail_price=retail_price,
@@ -47,7 +48,8 @@ def main_page():
             max_seats=max_seats,
             details=details,
             date=date,
-            time=time
+            time=time,
+            category=category
         ))
 
     return render_template('suggestions_create.html', page="create")

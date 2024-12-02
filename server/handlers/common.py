@@ -28,7 +28,8 @@ async def handler_create_suggestions(
     max_seats,
     details,
     date,
-    time
+    time,
+    category
 ):
     await prisma.connect()
     suggestions = await Suggestions.prisma().create(
@@ -37,9 +38,11 @@ async def handler_create_suggestions(
             'retail_price': retail_price,
             'wholesale_price': wholesale_price,
             'min_seats': min_seats,
+            'max_seats': max_seats,
             'details': details,
             'date': date,
-            'time': time
+            'time': time,
+            'category': category
         },
     )
     await prisma.disconnect()

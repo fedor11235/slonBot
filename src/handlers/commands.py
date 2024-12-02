@@ -5,6 +5,7 @@ from settings import my_keyboard_buttons, messages_no_profile, messages_help, me
 from helpers.user import getActiveUser
 from helpers.channel import get_btns_inline_channel
 from helpers.into_opt import get_btns_inline_categories_into_opt
+from helpers.into_suggestions import get_btns_inline_categories_into_suggestions
 
 router = Router()
 
@@ -65,7 +66,13 @@ async def command_getopt_handler(message: types.Message) -> None:
 
 @router.message(Command("business"))
 async def command_business_handler(message: types.Message) -> None:
-    await message.answer('Тут подборки')
+    user_id = message.chat.id
+    is_user_active = await getActiveUser(user_id)
+    if is_user_active == True:
+        await message.answer(message_profile)
+    else:
+        btns_inline_categories = await get_btns_inline_categories_into_suggestions()
+        await message.answer('Зайти в подборку:', reply_markup=btns_inline_categories)
 
 @router.message(Command("profile"))
 async def command_profile_handler(message: types.Message) -> None:
