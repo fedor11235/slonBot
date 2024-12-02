@@ -60,6 +60,7 @@ model Suggestions {
   id              Int     @id @default(autoincrement())
   // channel         Channel @relation(fields: [channel_id], references: [channel_id])
   // channel_id      BigInt  @unique
+  title           String
   category        String
   retail_price    String
   wholesale_price String
