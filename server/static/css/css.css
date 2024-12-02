@@ -4,6 +4,20 @@
   gap: 4px;
 }
 
+#container-time {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
 .last-row {
   grid-column: span 2;
+}
+
+#input-date {
+  pointer-events: none;
+}
+
+#input-time {
+  pointer-events: none;
 }
