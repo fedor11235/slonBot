@@ -19,7 +19,7 @@ python3 src/bot.py
 python3 prisma/seed.py
 
 ## запуск админки
-python3 admin/app.py
+python3 server/app.py
 
 ## просмотр бд
 prisma studio

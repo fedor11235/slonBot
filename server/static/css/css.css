@@ -1,0 +1,9 @@
+#container-date {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.last-row {
+  grid-column: span 2;
+}
