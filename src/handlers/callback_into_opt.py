@@ -34,7 +34,6 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: SelectCateg
 
 @router.callback_query(SelectCategoryIntoOptCallback.filter(F.step == "SELECT CHANNEL"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: SelectCategoryIntoOptCallback):
-    print("callback_data.value: ", callback_data.value)
     user_id=query.from_user.id
     channel_id = int(callback_data.value)
 

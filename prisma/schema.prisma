@@ -17,8 +17,9 @@ model User {
   state          String    @default("ЗАПУСТИЛ БОТА")
   tariff_plan    String    @default("base")
   channels       Channel[]
-  opt_edit       Int?
-  into_opt_edit  Int?
+  opt_edit             Int?
+  into_opt_edit        Int?
+  into_suggestion_edit Int?
 }
 
 model Channel {
@@ -57,20 +58,30 @@ model IntoOpt {
 }
 
 model Suggestions {
-  id              Int     @id @default(autoincrement())
-  // channel         Channel @relation(fields: [channel_id], references: [channel_id])
-  // channel_id      BigInt  @unique
-  title           String
-  category        String
-  retail_price    String
-  wholesale_price String
-  min_seats       String
-  max_seats       String
-  date            String
-  time            String
-  date_deadline   String?
-  details         String
-  username        String
+  id               Int     @id @default(autoincrement())
+  // channel       Channel @relation(fields: [channel_id], references: [channel_id])
+  // channel_id    BigInt  @unique
+  title            String
+  category         String
+  retail_price     String
+  wholesale_price  String
+  min_seats        String
+  max_seats        String
+  date             String
+  time             String
+  date_deadline    String?
+  details          String
+  username         String
+  into_suggestions IntoSuggestion?
+}
+
+model IntoSuggestion {
+  id                 Int         @id @default(autoincrement())
+  suggestions        Suggestions @relation(fields: [suggestion_id], references: [id])
+  suggestion_id      Int  @unique
+  date               String?
+  time               String?
+  posts              Post[]
 }
 
 model Post {
@@ -81,13 +92,15 @@ model Post {
   text            String?
   caption         String?
   media_group_id  String?
-  into_opt        IntoOpt @relation(fields: [into_opt_id], references: [id])
-  into_opt_id     Int
+  into_opt            IntoOpt @relation(fields: [into_opt_id], references: [id])
+  into_opt_id         Int
+  into_suggestion     IntoSuggestion @relation(fields: [into_suggestion_id], references: [id])
+  into_suggestion_id  Int
 }
 
 model Admin {
   id              Int     @id @default(autoincrement())
-  username         String  @default("admin")
+  username        String  @default("admin")
   password        String  @default("admin")
 } 
 
