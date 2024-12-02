@@ -5,7 +5,7 @@ from settings import my_keyboard_buttons, messages_no_profile, messages_help
 
 # from dotenv import load_dotenv
 
-from prisma.models import User, Channel, Post, IntoOpt
+from prisma.models import User, Channel, Post, IntoOpt, IntoSuggestion
 
 from helpers.user import get_state_user, set_state_user
 from helpers.categories import get_btns_inline_categories
@@ -204,7 +204,70 @@ async def command_message_handler(message: types.Message) -> None:
         await message.answer("Пост отправлен владельцу опта")
         await set_state_user(user_id, "АВТОРИЗИРОВАН")
 
+    elif user_state == "ЗАПИСЬ В ПОДБОРКУ СОХРАНЕНИЕ ПОСТА":
+        photo_path = ""
+        video_path = ""
+        animation_path = ""
+        caption = message.caption
+        text = message.text
+        media_group_id = message.media_group_id
 
+        user = await User.prisma().find_unique(
+            where={
+                'tg_id': user_id,
+            }
+        ) 
+
+        into_suggestion = await IntoSuggestion.prisma().find_unique(
+            where={
+                'id': user.into_suggestion_edit,
+            }
+        )
+
+        if message.photo != None and len(message.photo) > 0:
+            photo_id = message.photo[-1].file_id
+            photo_path = photo_id
+            # file_info = await bot.get_file(photo_id)
+            # file_name = f'{file_info.file_path.split("/")[-1]}'
+            # photo_path = file_name
+            # print("file_info: ", file_info)
+            # await bot.download_file(file_info.file_path, f'media/{photo_path}')
+
+        if message.video != None :
+            video_id = message.video.file_id
+            video_path = video_id
+            # file_info = await bot.get_file(video_id)
+            # file_name = f'{file_info.file_path.split("/")[-1]}'
+            # video_path = file_name
+            # await bot.download_file(file_info.file_path, f'media/{video_path}')
+
+        if message.animation != None :
+            animation_id = message.animation.file_id
+            animation_path = animation_id
+            # file_info = await bot.get_file(animation_id)
+            # file_name = f'{file_info.file_path.split("/")[-1]}'
+            # animation_path = file_name
+            # print("animation_path: ", animation_path)
+            # await bot.download_file(file_info.file_path, f'media/{animation_path}')
+
+        user_сhannel = await Post.prisma().create(
+            data = {
+                'img_id': photo_path,
+                'video_id': video_path,
+                'animation_id': animation_path,
+                'text': text,
+                'caption': caption,
+                'media_group_id': media_group_id,
+                'into_suggestion': {
+                    'connect': {
+                        'id': into_suggestion.id
+                    }
+                }
+            },
+        )
+
+        await message.answer("Пост отправлен владельцу опта")
+        await set_state_user(user_id, "АВТОРИЗИРОВАН")
 
 
 

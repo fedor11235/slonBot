@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from common.callback import SelectCategoryIntoSuggestionsCallback, SelectDateIntoSuggestions
+from common.callback import SelectCategoryIntoSuggestionsCallback, SelectDateIntoSuggestions, CreationIntoSuggestionsCallback, SelectTimeIntoSuggestions
 
 from prisma.models import User, Suggestions, IntoSuggestion
 
@@ -93,3 +93,138 @@ async def get_btns_inline_date_into_suggestion(user_id, page=0):
     ])
 
     return InlineKeyboardMarkup(inline_keyboard=inline_kb_list)
+
+async def set_into_suggestion_date(user_id, date):
+    user = await User.prisma().find_unique(
+        where={
+            'tg_id': user_id,
+        }
+    ) 
+
+    into_suggestion = await IntoSuggestion.prisma().find_unique(
+        where={
+            'id': user.into_suggestion_edit,
+        },
+    )
+    date_array = []
+    if into_suggestion.date != None:
+        date_array = into_suggestion.date.split(' ')
+
+    if date in date_array:
+        date_array.remove(date)
+
+    else:
+        date_array.append(date)
+
+    date_str = None
+
+    if len(date_array) > 0:
+        date_str = ' '.join(date_array)
+
+    into_suggestion = await IntoSuggestion.prisma().update(
+        where={
+            'id': user.into_suggestion_edit,
+        },
+        data={
+            "date": date_str,
+        },
+    )
+
+async def get_btns_confirm_date(channel_id):
+    inline_kb_list = [
+        [
+            InlineKeyboardButton(text="Изменить", callback_data=CreationIntoSuggestionsCallback(channel_id=channel_id, step="DATE CHANGE", value="").pack()),
+            InlineKeyboardButton(text="Подтвердить", callback_data=CreationIntoSuggestionsCallback(channel_id=channel_id, step="DATE SAVE", value="").pack()),
+        ]
+    ]
+
+    return InlineKeyboardMarkup(inline_keyboard=inline_kb_list)
+
+async def get_btns_time(user_id):
+    user = await User.prisma().find_unique(
+        where={
+            'tg_id': user_id,
+        },
+    ) 
+    into_suggestion = await IntoSuggestion.prisma().find_unique(
+        where={
+            'id': user.into_suggestion_edit,
+        },
+        include={
+            "suggestions": True
+        },
+    )
+
+    time_list = [
+        ['8/10', '13/10', '18/10'],
+        ['9/10', '14/10', '19/10'],
+        ['10/10', '15/10', '20/10'],
+        ['11/10', '16/10', '21/10'],
+        ['12/10', '17/10', '22/10'],
+    ]
+
+    inline_kb_list = [
+        [
+            InlineKeyboardButton(text="Утро", callback_data=SelectTimeIntoSuggestions(channel_id=user.into_suggestion_edit, step="EMPTY", value="").pack()),
+            InlineKeyboardButton(text="День", callback_data=SelectTimeIntoSuggestions(channel_id=user.into_suggestion_edit, step="EMPTY", value="").pack()),
+            InlineKeyboardButton(text="Вечер", callback_data=SelectTimeIntoSuggestions(channel_id=user.into_suggestion_edit, step="EMPTY", value="").pack()),
+        ]
+    ]
+
+    for time_row in time_list:
+        btn_time_row = []
+        for time in time_row:
+            time_selected_array = []
+            time_allowed_array = []
+            if into_suggestion.suggestions.time != None:
+                time_allowed_array = into_suggestion.suggestions.time.split(' ')
+            if into_suggestion.time != None:
+                time_selected_array = into_suggestion.time.split(' ')
+            btn_time_row.append(
+                InlineKeyboardButton(text=f"{(f'{time} ✅' if time in time_selected_array else time) if time in time_allowed_array else f'{time} ❌'}", callback_data=SelectTimeIntoSuggestions(channel_id=user.into_suggestion_edit, step=f"{'INTOSUG SELECT TIME' if time in time_allowed_array else 'EMPTY'}" , value=time).pack()),
+            )
+
+        inline_kb_list.append(btn_time_row)
+    
+    inline_kb_list.append([
+        InlineKeyboardButton(text="Подтвердить", callback_data=SelectTimeIntoSuggestions(channel_id=user.into_suggestion_edit, step="CONFIRM TIME", value="").pack())
+    ])
+
+    return InlineKeyboardMarkup(inline_keyboard=inline_kb_list)
+
+async def set_suggestions_time(user_id, time):
+    user = await User.prisma().find_unique(
+        where={
+            'tg_id': user_id,
+        }
+    ) 
+
+    into_suggestion = await IntoSuggestion.prisma().find_unique(
+        where={
+            'id': user.into_suggestion_edit,
+        },
+    )
+    time_array = []
+    if into_suggestion.time != None:
+        time_array = into_suggestion.time.split(' ')
+
+    if time in time_array:
+        time_array.remove(time)
+
+    else:
+        time_array.append(time)
+
+    time_str = None
+
+    if len(time) > 0:
+        time_str = ' '.join(time_array)
+
+    into_suggestion = await IntoSuggestion.prisma().update(
+        where={
+            'id': user.into_suggestion_edit,
+        },
+        data={
+            "time": time_str,
+        },
+    )
+

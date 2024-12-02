@@ -92,10 +92,10 @@ model Post {
   text            String?
   caption         String?
   media_group_id  String?
-  into_opt            IntoOpt @relation(fields: [into_opt_id], references: [id])
-  into_opt_id         Int
-  into_suggestion     IntoSuggestion @relation(fields: [into_suggestion_id], references: [id])
-  into_suggestion_id  Int
+  into_opt            IntoOpt? @relation(fields: [into_opt_id], references: [id])
+  into_opt_id         Int?
+  into_suggestion     IntoSuggestion? @relation(fields: [into_suggestion_id], references: [id])
+  into_suggestion_id  Int?
 }
 
 model Admin {

@@ -45,8 +45,18 @@ class SelectCategoryIntoSuggestionsCallback(CallbackData, prefix="SELECT CATEGOR
     step: str
     value: str
 
-class SelectDateIntoSuggestions(CallbackData, prefix="SELECT DATE INTO INTOSUG"):
+class SelectDateIntoSuggestions(CallbackData, prefix="SELECT DATE INTOSUG"):
     channel_id: int
     step: str
     value: str
     page: int
+
+class CreationIntoSuggestionsCallback(CallbackData, prefix="CREATION INTOSUG"):
+    channel_id: int
+    step: str
+    value: str
+
+class SelectTimeIntoSuggestions(CallbackData, prefix="SELECT TIME INTOSUG"):
+    channel_id: int
+    step: str
+    value: str
