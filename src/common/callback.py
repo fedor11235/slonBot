@@ -64,3 +64,7 @@ class SelectTimeIntoSuggestions(CallbackData, prefix="SELECT TIME INTOSUG"):
 class SetCategoryCatalogCallback(CallbackData, prefix="GET CATALOG CATEGORY"):
     step: str
     value: str
+
+class SelectCategoryCatalogCallback(CallbackData, prefix="SELECT CATEGORY INTO OPT"):
+    step: str
+    value: str
