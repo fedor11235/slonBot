@@ -8,6 +8,7 @@ from helpers.into_opt import get_btns_inline_categories_into_opt
 from helpers.into_suggestions import get_btns_inline_categories_into_suggestions
 from helpers.catalog import get_btns_inline_categories_catalog
 from helpers.my_channel import get_my_channels
+from helpers.profile import get_btns_profile
 
 router = Router()
 
@@ -94,7 +95,8 @@ async def command_profile_handler(message: types.Message) -> None:
     if is_user_active == True:
         await message.answer(message_profile)
     else:
-        await message.answer(message_profile)
+        btns_inline_profile = await get_btns_profile()
+        await message.answer('Зайти в подборку:', reply_markup=btns_inline_profile)
 
 @router.message(Command("partners"))
 async def command_partners_handler(message: types.Message) -> None:

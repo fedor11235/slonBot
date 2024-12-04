@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from prisma.models import User, Opt
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-# from aiogram.utils.keyboard import InlineKeyboardBuilder
+
 from common.callback import CreationOptCallback, SelectDateOpt, SelectTimeOpt
 
 async def set_opt(user_id, key, value):

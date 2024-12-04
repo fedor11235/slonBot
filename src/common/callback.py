@@ -72,3 +72,7 @@ class SelectCategoryCatalogCallback(CallbackData, prefix="SELECT CATEGORY CATALO
 class SelectMyChannelCallback(CallbackData, prefix="SELECT MY CHANNEL"):
     step: str
     value: str
+
+class ProfileCallback(CallbackData, prefix="SELECT MY CHANNEL"):
+    step: str
+    value: str
