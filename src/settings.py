@@ -3,6 +3,7 @@ from aiogram import types, html
 my_commands = [
     types.BotCommand(command='start', description='Рестарт бота'),
     types.BotCommand(command='channel', description='Мои каналы'),
+    types.BotCommand(command='catalog', description='Каталог'),
     types.BotCommand(command='help', description='Помощь'),
     types.BotCommand(command='newopt', description='Создать опт'),
     types.BotCommand(command='getopt', description='Войти в опт'),

@@ -6,6 +6,7 @@ from helpers.user import getActiveUser
 from helpers.channel import get_btns_inline_channel
 from helpers.into_opt import get_btns_inline_categories_into_opt
 from helpers.into_suggestions import get_btns_inline_categories_into_suggestions
+from helpers.catalog import get_btns_inline_categories_catalog
 
 router = Router()
 
@@ -33,7 +34,17 @@ async def command_channel_handler(message: types.Message) -> None:
     if is_user_active == True:
         await message.answer(message_profile)
     else:
-        await message.answer('Тут каталог')
+        await message.answer('Тут мои каналы')
+
+@router.message(Command("catalog"))
+async def command_channel_handler(message: types.Message) -> None:
+    user_id = message.chat.id
+    is_user_active = await getActiveUser(user_id)
+    if is_user_active == True:
+        await message.answer(message_profile)
+    else:
+        btns_inline_categories = await get_btns_inline_categories_catalog()
+        await message.answer('Выберите категорию:', reply_markup=btns_inline_categories)
 
 @router.message(Command("pay"))
 async def command_pay_handler(message: types.Message) -> None:

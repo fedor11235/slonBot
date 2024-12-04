@@ -60,3 +60,7 @@ class SelectTimeIntoSuggestions(CallbackData, prefix="SELECT TIME INTOSUG"):
     channel_id: int
     step: str
     value: str
+
+class SetCategoryCatalogCallback(CallbackData, prefix="GET CATALOG CATEGORY"):
+    step: str
+    value: str
