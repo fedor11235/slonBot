@@ -65,6 +65,6 @@ class SetCategoryCatalogCallback(CallbackData, prefix="GET CATALOG CATEGORY"):
     step: str
     value: str
 
-class SelectCategoryCatalogCallback(CallbackData, prefix="SELECT CATEGORY INTO OPT"):
+class SelectCategoryCatalogCallback(CallbackData, prefix="SELECT CATEGORY CATALOG"):
     step: str
     value: str

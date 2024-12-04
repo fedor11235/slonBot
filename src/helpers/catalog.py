@@ -1,5 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from common.callback import SetCategoryCatalogCallback, SelectCategoryCatalogCallback
+from prisma.models import Channel
+
 
 async def get_btns_inline_categories_catalog():
     inline_kb_list = [
