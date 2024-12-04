@@ -105,5 +105,5 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: SelectTimeI
 async def my_callback_foo(query: types.CallbackQuery, callback_data: SelectTimeIntoOpt):
     user_id=query.from_user.id
     await query.message.edit_text('Пришлите пост:')
-    await set_state_user(user_id, "ЗАПИСЬ В ПОДБОРКИ СОХРАНЕНИЕ ПОСТА")
+    await set_state_user(user_id, "ЗАПИСЬ В ОПТ СОХРАНЕНИЕ ПОСТА")
 

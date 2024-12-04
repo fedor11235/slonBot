@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from common.callback import SelectCategoryIntoSuggestionsCallback, SelectDateIntoSuggestions, CreationIntoSuggestionsCallback, SelectTimeIntoSuggestions
 
-from prisma.models import User, Suggestions, IntoSuggestion
+from prisma.models import User, Suggestions, IntoSuggestion, Channel
 
 async def get_btns_inline_categories_into_suggestions():
     inline_kb_list = [
@@ -25,18 +25,26 @@ async def get_btns_inline_channels_into_suggestions(category):
     inline_kb_list = []
 
     if category == 'ALL':
-        channels = await Suggestions.prisma().find_many()
+        channels = await Channel.prisma().find_many(
+            include={
+                'suggestions': True
+            }
+        )
     else:
-        channels = await Suggestions.prisma().find_many(
+        channels = await Channel.prisma().find_many(
             where={
                 'category': category,
             },
+            include={
+                'suggestions': True
+            }
         )
 
     for channel in channels:
-        inline_kb_list.append(
-            [InlineKeyboardButton(text=channel.title, callback_data=SelectCategoryIntoSuggestionsCallback(step="SELECT CHANNEL", value=str(channel.id)).pack())],
-        )
+        if channel.suggestions:
+            inline_kb_list.append(
+                [InlineKeyboardButton(text=channel.title, callback_data=SelectCategoryIntoSuggestionsCallback(step="SELECT CHANNEL", value=str(channel.channel_id)).pack())],
+            )
 
     inline_kb_list.append(
         [InlineKeyboardButton(text="Назад", callback_data=SelectCategoryIntoSuggestionsCallback(step="SELECT CHANNEL BACK", value="").pack())],
@@ -50,14 +58,21 @@ async def get_btns_inline_date_into_suggestion(user_id, page=0):
             'tg_id': user_id,
         }
     ) 
+    print("!!@334444444444444$")
     into_suggestion = await IntoSuggestion.prisma().find_unique(
         where={
             'id': user.into_suggestion_edit,
         },
         include={
-            "suggestions": True
+            'channel': {
+                "include": {
+                    "suggestions": True
+                }
+            },
         },
     )
+
+    print("into_suggestion: ", into_suggestion)
 
     today = datetime.today() + timedelta(days=page * 10)
 
@@ -75,8 +90,8 @@ async def get_btns_inline_date_into_suggestion(user_id, page=0):
     for date in date_list:
         date_allowed_array = []
         date_selected_array = []
-        if into_suggestion.suggestions.date != None:
-            date_allowed_array = into_suggestion.suggestions.date.split(' ')
+        if into_suggestion.channel.suggestions.date != None:
+            date_allowed_array = into_suggestion.channel.suggestions.date.split(' ')
         if into_suggestion.date != None:
             date_selected_array = into_suggestion.date.split(' ')
 
@@ -151,7 +166,11 @@ async def get_btns_time(user_id):
             'id': user.into_suggestion_edit,
         },
         include={
-            "suggestions": True
+            'channel': {
+                "include": {
+                    "suggestions": True
+                }
+            },
         },
     )
 
@@ -176,8 +195,8 @@ async def get_btns_time(user_id):
         for time in time_row:
             time_selected_array = []
             time_allowed_array = []
-            if into_suggestion.suggestions.time != None:
-                time_allowed_array = into_suggestion.suggestions.time.split(' ')
+            if into_suggestion.channel.suggestions.time != None:
+                time_allowed_array = into_suggestion.channel.suggestions.time.split(' ')
             if into_suggestion.time != None:
                 time_selected_array = into_suggestion.time.split(' ')
             btn_time_row.append(

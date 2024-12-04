@@ -22,7 +22,6 @@ async def get_state_user(user_id):
     return user.state
 
 async def set_state_user(user_id, state):
-    print("set_state_user !!!!!!!!!!!!!!!!!!")
     user = await User.prisma().update(
         where={
             'tg_id': user_id,

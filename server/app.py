@@ -4,7 +4,11 @@ from flask import Flask, redirect, url_for
 from flask import render_template, request
 from flask_login import LoginManager
 
-from handlers.common import handler_login, handler_create_suggestions, handler_get_suggestions
+from handlers.common import (
+    handler_login,
+    handler_create_suggestions,
+    handler_get_suggestions
+)
 
 app = Flask(__name__)
 
@@ -41,6 +45,7 @@ def main_page():
         time = request.form.get('time')
         category = request.form.get('category')
         title = request.form.get('title')
+        channel_id = request.form.get('channel_id')
         asyncio.run(handler_create_suggestions(
             username=username,
             retail_price=retail_price,
@@ -51,7 +56,8 @@ def main_page():
             date=date,
             time=time,
             category=category,
-            title=title
+            title=title,
+            channel_id=channel_id
         ))
 
     return render_template('suggestions_create.html', page="create")

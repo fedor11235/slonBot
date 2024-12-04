@@ -8,15 +8,6 @@ from common.callback import (
 )
 
 from helpers.user import set_state_user
-# from helpers.into_opt import (
-#     get_btns_inline_categories_into_opt,
-#     get_btns_inline_channels_into_opt,
-#     get_btns_inline_date_into_opt,
-#     set_into_opt_date,
-#     get_btns_confirm_date,
-#     get_btns_time,
-#     set_opt_time
-# )
 
 from helpers.into_suggestions import (
     get_btns_inline_channels_into_suggestions,
@@ -36,8 +27,6 @@ router = Router()
 async def my_callback_foo(query: types.CallbackQuery, callback_data: SelectCategoryIntoSuggestionsCallback):
     btns_inline_channels = await get_btns_inline_channels_into_suggestions(callback_data.value)
     await query.message.edit_text('Выберите канал:' , reply_markup=btns_inline_channels)
-    # print("keke")
-    # await query.answer("ПУК")
 
 @router.callback_query(SelectCategoryIntoSuggestionsCallback.filter(F.step == "SELECT CHANNEL BACK"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: SelectCategoryIntoSuggestionsCallback):
@@ -51,19 +40,21 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: SelectCateg
 
     into_suggestion = await IntoSuggestion.prisma().upsert(
         where={
-            'id': channel_id,
+            'channel_id': channel_id,
         },
         data={
             'create': {
-                'suggestions': {
+                'channel': {
                     'connect': {
-                        'id': channel_id
+                        'channel_id': channel_id
                     }
                 }
             },
             'update': {},
         }
     )
+
+    print("bebebebe")
 
     user = await User.prisma().update(
         where={

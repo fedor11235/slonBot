@@ -25,13 +25,15 @@ model User {
 model Channel {
   id           Int     @id @default(autoincrement())
   channel_id   BigInt  @unique
-  admin        User    @relation(fields: [admin_id], references: [tg_id])
-  admin_id     BigInt
+  admin        User?   @relation(fields: [admin_id], references: [tg_id])
+  admin_id     BigInt?
   category     String?
   username     String?
   title        String?
   opt          Opt?
-  into_opt     IntoOpt?
+  suggestions  Suggestions?
+  into_opt             IntoOpt?
+  into_suggestions     IntoSuggestion?
 }
 
 model Opt {
@@ -59,10 +61,8 @@ model IntoOpt {
 
 model Suggestions {
   id               Int     @id @default(autoincrement())
-  // channel       Channel @relation(fields: [channel_id], references: [channel_id])
-  // channel_id    BigInt  @unique
-  title            String
-  category         String
+  channel          Channel @relation(fields: [channel_id], references: [channel_id])
+  channel_id       BigInt  @unique
   retail_price     String
   wholesale_price  String
   min_seats        String
@@ -71,14 +71,12 @@ model Suggestions {
   time             String
   date_deadline    String?
   details          String
-  username         String
-  into_suggestions IntoSuggestion?
 }
 
 model IntoSuggestion {
-  id                 Int         @id @default(autoincrement())
-  suggestions        Suggestions @relation(fields: [suggestion_id], references: [id])
-  suggestion_id      Int  @unique
+  id                 Int     @id @default(autoincrement())
+  channel            Channel @relation(fields: [channel_id], references: [channel_id])
+  channel_id         BigInt  @unique
   date               String?
   time               String?
   posts              Post[]
