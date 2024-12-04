@@ -9,19 +9,21 @@ router = Router()
 async def command_profile_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
-    if is_user_active == True:
-        await message.answer(message_profile)
-    else:
-        await message.answer(messages_no_profile)
+    await message.answer("Тут профиль")
+    # if is_user_active == True:
+    #     await message.answer(message_profile)
+    # else:
+    #     await message.answer(messages_no_profile)
 
 @router.message(F.text == 'Каталог')
 async def command_catalog_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
-    if is_user_active == True:
-        await message.answer("Тут каталог")
-    else:
-        await message.answer(messages_no_profile)
+    await message.answer("Тут каталог")
+    # if is_user_active == True:
+    #     await message.answer("Тут каталог")
+    # else:
+    #     await message.answer(messages_no_profile)
 
 @router.message(F.text == 'Помощь')
 async def command_help_handler(message: types.Message) -> None:

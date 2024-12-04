@@ -7,6 +7,7 @@ from helpers.channel import get_btns_inline_channel
 from helpers.into_opt import get_btns_inline_categories_into_opt
 from helpers.into_suggestions import get_btns_inline_categories_into_suggestions
 from helpers.catalog import get_btns_inline_categories_catalog
+from helpers.my_channel import get_my_channels
 
 router = Router()
 
@@ -34,7 +35,8 @@ async def command_channel_handler(message: types.Message) -> None:
     if is_user_active == True:
         await message.answer(message_profile)
     else:
-        await message.answer('Тут мои каналы')
+        btns_inline_my_channels = await get_my_channels(user_id)
+        await message.answer('Мои каналы:', reply_markup=btns_inline_my_channels)
 
 @router.message(Command("catalog"))
 async def command_channel_handler(message: types.Message) -> None:

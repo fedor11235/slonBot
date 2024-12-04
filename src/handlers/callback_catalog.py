@@ -1,4 +1,5 @@
 from aiogram import Router, F, types
+from aiogram import types, html
 
 from common.callback import SetCategoryCatalogCallback, SelectCategoryCatalogCallback
 
@@ -26,11 +27,11 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: SelectCateg
     )
 
     await query.message.edit_text(f'''
-Информация о канале:
-Категория: {channel.category}
-Юзернейм: {channel.username}
-Заголовок: {channel.title}
-Айди канала: {channel.channel_id}
+{html.bold('Информация о канале:')}
+{html.bold('Категория:')} {channel.category}
+{html.bold('Юзернейм:')} {channel.username}
+{html.bold('Заголовок:')} {channel.title}
+{html.bold('Айди канала:')} {channel.channel_id}
 ''')
 
 @router.callback_query(SelectCategoryCatalogCallback.filter(F.step == "SELECT CHANNEL BACK"))
