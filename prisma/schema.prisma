@@ -15,7 +15,13 @@ model User {
   id             Int       @id @default(autoincrement())
   tg_id          BigInt    @unique
   state          String    @default("ЗАПУСТИЛ БОТА")
-  tariff_plan    String    @default("base")
+  tariff_plan    String    @default("БАЗОВЫЙ")
+  tariff_end     String     @default("ВСЕГДА")
+  balance        Int       @default(0)
+  by_opt_sum     Int       @default(0)
+  by_opt_count   Int       @default(0)
+  total_saved    Int       @default(0)
+  invited_users  Int       @default(0)
   channels       Channel[]
   opt_edit             Int?
   into_opt_edit        Int?

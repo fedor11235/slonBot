@@ -1,6 +1,6 @@
 from aiogram import Router, F, types
 from aiogram.filters import Command, CommandStart
-from settings import my_keyboard_buttons, messages_no_profile, messages_help, message_profile
+from settings import my_keyboard_buttons, messages_no_profile, messages_help
 from helpers.user import getActiveUser
 
 router = Router()

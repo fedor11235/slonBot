@@ -1,7 +1,7 @@
 from aiogram import Router, F, types
 from aiogram.filters import Command, CommandStart
 from prisma.models import User
-from settings import my_keyboard_buttons, messages_no_profile, messages_help, message_profile
+from settings import my_keyboard_buttons, messages_no_profile, messages_help
 from helpers.user import getActiveUser
 from helpers.channel import get_btns_inline_channel
 from helpers.into_opt import get_btns_inline_categories_into_opt
@@ -34,7 +34,7 @@ async def command_channel_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
     if is_user_active == True:
-        await message.answer(message_profile)
+        await message.answer(messages_no_profile)
     else:
         btns_inline_my_channels = await get_my_channels(user_id)
         await message.answer('Мои каналы:', reply_markup=btns_inline_my_channels)
@@ -44,7 +44,7 @@ async def command_channel_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
     if is_user_active == True:
-        await message.answer(message_profile)
+        await message.answer(messages_no_profile)
     else:
         btns_inline_categories = await get_btns_inline_categories_catalog()
         await message.answer('Выберите категорию:', reply_markup=btns_inline_categories)
@@ -54,7 +54,7 @@ async def command_pay_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
     if is_user_active == True:
-        await message.answer(message_profile)
+        await message.answer(messages_no_profile)
     else:
         await message.answer('Тут плтёжка')
 
@@ -63,7 +63,7 @@ async def command_newopt_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
     if is_user_active == True:
-        await message.answer(message_profile)
+        await message.answer(messages_no_profile)
     else:
         btns_inline_categories = await get_btns_inline_channel(user_id)
         await message.answer('Выберите канал в котором хотите собрать опт:', reply_markup=btns_inline_categories)
@@ -73,7 +73,7 @@ async def command_getopt_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
     if is_user_active == True:
-        await message.answer(message_profile)
+        await message.answer(messages_no_profile)
     else:
         btns_inline_categories = await get_btns_inline_categories_into_opt()
         await message.answer('Зайти в опт:', reply_markup=btns_inline_categories)
@@ -83,7 +83,7 @@ async def command_business_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
     if is_user_active == True:
-        await message.answer(message_profile)
+        await message.answer(messages_no_profile)
     else:
         btns_inline_categories = await get_btns_inline_categories_into_suggestions()
         await message.answer('Зайти в подборку:', reply_markup=btns_inline_categories)
@@ -93,17 +93,17 @@ async def command_profile_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
     if is_user_active == True:
-        await message.answer(message_profile)
+        await message.answer(messages_no_profile)
     else:
         btns_inline_profile = await get_btns_profile()
-        await message.answer('Зайти в подборку:', reply_markup=btns_inline_profile)
+        await message.answer('Это ваш профиль, тут вы можете:', reply_markup=btns_inline_profile)
 
 @router.message(Command("partners"))
 async def command_partners_handler(message: types.Message) -> None:
     user_id = message.chat.id
     is_user_active = await getActiveUser(user_id)
     if is_user_active == True:
-        await message.answer(message_profile)
+        await message.answer(messages_no_profile)
     else:
         await message.answer('Тут промокоды')
 
