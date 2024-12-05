@@ -27,23 +27,16 @@ async def get_btns_inline_channels_into_opt(category):
     inline_kb_list = []
 
     if category == 'ALL':
-        channels = await Channel.prisma().find_many(
-            include={
-                'opt': True
-            }
-        )
+        channels = await Channel.prisma().find_many()
     else:
         channels = await Channel.prisma().find_many(
             where={
                 'category': category,
-            },
-            include={
-                'opt': True
             }
         )
 
     for channel in channels:
-        if channel.opt:
+        if channel.type=='ПОЛЬЗОВАТЕЛЬСКИЙ':
             inline_kb_list.append(
                 [InlineKeyboardButton(text=channel.title, callback_data=SelectCategoryIntoOptCallback(step="SELECT CHANNEL", value=str(channel.channel_id)).pack())],
             )

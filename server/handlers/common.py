@@ -16,9 +16,13 @@ async def handler_login(username, password):
 
 async def handler_get_suggestions():
     await prisma.connect()
-    suggestions = await Suggestions.prisma().find_many()
+    channels = await Channel.prisma().find_many(
+        where={
+            'type': 'ПОДБОРКА',
+        }
+    )
     await prisma.disconnect()
-    return suggestions
+    return channels
 
 async def handler_create_suggestions(
     username,
@@ -44,6 +48,7 @@ async def handler_create_suggestions(
                 'username': username,
                 'title': title,
                 'category': category,
+                'type': 'ПОДБОРКА'
             },
             'update': {},
         }

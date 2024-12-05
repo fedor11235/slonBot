@@ -30,6 +30,7 @@ model Channel {
   category     String?
   username     String?
   title        String?
+  type         String
   opt          Opt?
   suggestions  Suggestions?
   into_opt             IntoOpt?

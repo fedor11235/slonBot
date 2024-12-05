@@ -13,10 +13,6 @@ from helpers.opt import set_opt, get_btns_date, get_btns_time, get_info_opt, get
 
 from bot import bot
 
-# import redis
-# db_redis = redis.Redis(host='localhost', port=6379, db=0)
-# db_redis.ping()
-
 router = Router()
 
 @router.message()
@@ -34,49 +30,60 @@ async def command_message_handler(message: types.Message) -> None:
             try:
                 chat = await bot.get_chat(text)
                 bot_status = await bot.get_chat_member(chat_id=chat.id, user_id=bot.id)
-                user_сhannel = await Channel.prisma().create(
-                    data = {
+                user_сhannel = await Channel.prisma().upsert(
+                    where={
                         'channel_id': chat.id,
-                        'username': chat.username,
-                        'title': chat.title,
-                        'admin': {
-                            'connect': {
-                                'tg_id': user_id
+                    },
+                    data = {
+                        'create': {
+                            'channel_id': chat.id,
+                            'username': chat.username,
+                            'title': chat.title,
+                            'type': 'ПОЛЬЗОВАТЕЛЬСКИЙ',
+                            'admin': {
+                                'connect': {
+                                    'tg_id': user_id
+                                }
                             }
-                        }
+                        },
+                        'update': {},
                     },
                 )
                 await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
                 btns_inline_categories = await get_btns_inline_categories(chat.id)
                 await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
-                # db_redis.set('channel_id', chat.id)
             except:
                 await message.answer("Вы ввели некорректные данные")
 
         elif text != None and 'https' in text:
-
-            # try:
+            try:
                 username = '@' + text.split('/')[-1]
                 chat = await bot.get_chat(username)
                 bot_status = await bot.get_chat_member(chat_id=chat.id, user_id=bot.id)
-                user_сhannel = await Channel.prisma().create(
-                    data = {
+                user_сhannel = await Channel.prisma().upsert(
+                    where={
                         'channel_id': chat.id,
-                        'username': chat.username,
-                        'title': chat.title,
-                        'admin': {
-                            'connect': {
-                                'tg_id': user_id
+                    },
+                    data = {
+                        'create': {
+                            'channel_id': chat.id,
+                            'username': chat.username,
+                            'title': chat.title,
+                            'type': 'ПОЛЬЗОВАТЕЛЬСКИЙ',
+                            'admin': {
+                                'connect': {
+                                    'tg_id': user_id
+                                }
                             }
-                        }
+                        },
+                        'update': {},
                     },
                 )
                 await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
                 btns_inline_categories = await get_btns_inline_categories(chat.id)
                 await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
-                # db_redis.set('channel_id', chat.id)
-            # except:
-            #     await message.answer("Вы ввели некорректные данные")
+            except:
+                await message.answer("В пересланном канале нет бота")
 
         elif message.forward_origin != None:
             try:
@@ -84,22 +91,28 @@ async def command_message_handler(message: types.Message) -> None:
                 username = message.forward_origin.chat.username
                 title = message.forward_origin.chat.title
                 bot_status = await bot.get_chat_member(chat_id=chat_id, user_id=bot.id)
-                user_сhannel = await Channel.prisma().create(
-                    data = {
+                user_сhannel = await Channel.prisma().upsert(
+                    where={
                         'channel_id': chat_id,
-                        'username': username,
-                        'title': title,
-                        'admin': {
-                            'connect': {
-                                'tg_id': user_id
+                    },
+                    data = {
+                        'create': {
+                            'channel_id': chat_id,
+                            'username': username,
+                            'title': title,
+                            'type': 'ПОЛЬЗОВАТЕЛЬСКИЙ',
+                            'admin': {
+                                'connect': {
+                                    'tg_id': user_id
+                                }
                             }
-                        }
+                        },
+                        'update': {},
                     },
                 )
                 await set_state_user(user_id, "ЗАДАЁТ КАТЕГОРИЮ")
                 btns_inline_categories = await get_btns_inline_categories(chat_id)
                 await message.answer('Введите категорию канала:', reply_markup=btns_inline_categories)
-                # db_redis.set('channel_id', chat_id)
             except:
                 await message.answer("В пересланном канале нет бота")
 
@@ -126,7 +139,6 @@ async def command_message_handler(message: types.Message) -> None:
         await set_opt(user_id, "max_seats", message.text)
         btns_inline_date = await get_btns_date(user_id)
         await message.answer('Выберите доступные для брони слоты:' , reply_markup=btns_inline_date)
-        # await set_state_user(user_id, "СОЗДАНИЕ ОПТА ДОСТУПНЫЕ СЛОТЫ")
 
     elif user_state == "СОЗДАНИЕ ОПТА КРАИНЯЯ ДАТА ФОРМИРОВАНИЯ ОПТА":
         await set_opt(user_id, "date_deadline", message.text)

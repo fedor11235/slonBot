@@ -25,23 +25,16 @@ async def get_btns_inline_channels_into_suggestions(category):
     inline_kb_list = []
 
     if category == 'ALL':
-        channels = await Channel.prisma().find_many(
-            include={
-                'suggestions': True
-            }
-        )
+        channels = await Channel.prisma().find_many()
     else:
         channels = await Channel.prisma().find_many(
             where={
                 'category': category,
-            },
-            include={
-                'suggestions': True
             }
         )
 
     for channel in channels:
-        if channel.suggestions:
+        if channel.type=='ПОДБОРКА':
             inline_kb_list.append(
                 [InlineKeyboardButton(text=channel.title, callback_data=SelectCategoryIntoSuggestionsCallback(step="SELECT CHANNEL", value=str(channel.channel_id)).pack())],
             )
@@ -58,7 +51,6 @@ async def get_btns_inline_date_into_suggestion(user_id, page=0):
             'tg_id': user_id,
         }
     ) 
-    print("!!@334444444444444$")
     into_suggestion = await IntoSuggestion.prisma().find_unique(
         where={
             'id': user.into_suggestion_edit,
