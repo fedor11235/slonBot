@@ -9,7 +9,8 @@ from helpers.profile import (
   get_btn_back_menu,
   get_btn_my_opt,
   get_btn_back_channel,
-  get_my_channel
+  get_my_channel,
+  get_release_schedule
 )
 
 router = Router()
@@ -23,6 +24,9 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCall
 @router.callback_query(ProfileCallback.filter(F.step == "RELEASE SCHEDULE"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCallback):
     user_id=query.from_user.id
+    text_schedule = await get_release_schedule(user_id)
+    btns_inline = await get_btn_back_menu()
+    await query.message.edit_text(text_schedule, reply_markup=btns_inline)
 
 @router.callback_query(ProfileCallback.filter(F.step == "STATISTICS"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCallback):

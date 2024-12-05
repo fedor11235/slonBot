@@ -64,3 +64,26 @@ async def get_my_channel(channel_id):
     )
 
     return channel
+
+async def get_release_schedule(user_id):
+    inline_kb_list = []
+    user = await User.prisma().find_unique(
+        where={
+            'tg_id': user_id,
+        },
+        include={
+            'channels': {
+                'include': {
+                    'into_opt': True
+                }
+            }
+        }
+    )
+    opts = []
+    text = ""
+  
+    for channel in user.channels:
+        if channel.into_opt != None:
+            text += f"Дата: {channel.into_opt.date}. Время:{channel.into_opt.time}\n"
+
+    return text
