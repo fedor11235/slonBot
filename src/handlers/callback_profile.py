@@ -4,13 +4,21 @@ from prisma.models import User, Opt
 
 from common.callback import ProfileCallback
 
-from helpers.profile import get_btns_profile, get_btn_back_menu
+from helpers.profile import (
+  get_btns_profile,
+  get_btn_back_menu,
+  get_btn_my_opt,
+  get_btn_back_channel,
+  get_my_channel
+)
 
 router = Router()
 
 @router.callback_query(ProfileCallback.filter(F.step == "MY OPT"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCallback):
     user_id=query.from_user.id
+    btns_inline = await get_btn_my_opt(user_id)
+    await query.message.edit_text("Мои опты:",  reply_markup=btns_inline)
 
 @router.callback_query(ProfileCallback.filter(F.step == "RELEASE SCHEDULE"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCallback):
@@ -53,8 +61,23 @@ async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCall
 @router.callback_query(ProfileCallback.filter(F.step == "BALANCE"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCallback):
     user_id=query.from_user.id
+    btns_inline = await get_btn_back_menu()
+    await query.message.edit_text("Пополнить баланс следуйщими методами:",  reply_markup=btns_inline)
 
 @router.callback_query(ProfileCallback.filter(F.step == "MENU"))
 async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCallback):
     btns_inline_profile = await get_btns_profile()
     await query.message.edit_text('Это ваш профиль, тут вы можете:', reply_markup=btns_inline_profile)
+
+@router.callback_query(ProfileCallback.filter(F.step == "SELECT CHANNEL"))
+async def my_callback_foo(query: types.CallbackQuery, callback_data: ProfileCallback):
+    btns_inline_profile = await get_btn_back_channel()
+    channel_id = int(callback_data.value)
+    channel = await get_my_channel(channel_id)
+    await query.message.edit_text(f'''
+{html.bold('Информация о канале:')}
+{html.bold('Категория:')} {channel.category}
+{html.bold('Юзернейм:')} {channel.username}
+{html.bold('Заголовок:')} {channel.title}
+{html.bold('Айди канала:')} {channel.channel_id}
+''', reply_markup=btns_inline_profile)

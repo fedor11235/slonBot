@@ -1,7 +1,16 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from prisma.models import User, Channel
+
 from common.callback import ProfileCallback
 
+async def get_btn_back_channel():
+    inline_kb_list = [
+        [InlineKeyboardButton(text="Назад", callback_data=ProfileCallback(step="MY OPT", value="").pack())],
+    ]
+
+    return InlineKeyboardMarkup(inline_keyboard=inline_kb_list)
+    
 async def get_btn_back_menu():
     inline_kb_list = [
         [InlineKeyboardButton(text="Назад", callback_data=ProfileCallback(step="MENU", value="").pack())],
@@ -18,3 +27,40 @@ async def get_btns_profile():
     ]
 
     return InlineKeyboardMarkup(inline_keyboard=inline_kb_list)
+
+async def get_btn_my_opt(user_id):
+    inline_kb_list = []
+    user = await User.prisma().find_unique(
+        where={
+            'tg_id': user_id,
+        },
+        include={
+            'channels': {
+                'include': {
+                    'opt': True
+                }
+            }
+        }
+    )
+    opts = []
+  
+    for channel in user.channels:
+        if channel.opt != None:
+            inline_kb_list.append(
+                [InlineKeyboardButton(text=channel.title, callback_data=ProfileCallback(step="SELECT CHANNEL", value=str(channel.channel_id)).pack())],
+            )
+
+    inline_kb_list.append(
+        [InlineKeyboardButton(text="Назад", callback_data=ProfileCallback(step="MENU", value="").pack())],
+    )
+
+    return InlineKeyboardMarkup(inline_keyboard=inline_kb_list)
+
+async def get_my_channel(channel_id):
+    channel = await Channel.prisma().find_unique(
+        where={
+            'channel_id': channel_id,
+        }
+    )
+
+    return channel
